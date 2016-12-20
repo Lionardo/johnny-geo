@@ -37,9 +37,8 @@
            */
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: 9.694, lng: 100.03916},
-              zoom: 20,
-              mapTypeId: 'terrain',
+              center: {lat: 47.36213, lng: 8.53237},
+              zoom: 19,
               mapTypeId: google.maps.MapTypeId.SATELLITE
             });
             loadKmlLayer(src, map);
@@ -53,8 +52,10 @@
                    };
 
                    infoWindow.setPosition(pos);
-                   infoWindow.setContent('Location found.');
+                   infoWindow.setContent('you are here.');
                    map.setCenter(pos);
+                   map.setZoom(21);
+                   map.setTilt(0);
                  }, function() {
                    handleLocationError(true, infoWindow, map.getCenter());
                  });
