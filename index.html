@@ -32,7 +32,6 @@
     <script>
           var map;
           var src = 'https://lionardo.github.io/johnny-geo/mapping.kml';
-
           /**
            * Initializes the map and calls the function that loads the KML layer.
            */
@@ -40,28 +39,54 @@
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: 9.694, lng: 100.03916},
               zoom: 20,
-              mapTypeId: 'terrain'
+              mapTypeId: 'terrain',
+              mapTypeId: google.maps.MapTypeId.SATELLITE
             });
             loadKmlLayer(src, map);
-          }
 
-          /**
-           * Adds a KMLLayer based on the URL passed. Clicking on a marker
-           * results in the balloon content being loaded into the right-hand div.
-           * @param {string} src A URL for a KML file.
-           */
-          function loadKmlLayer(src, map) {
-            var kmlLayer = new google.maps.KmlLayer(src, {
-              suppressInfoWindows: true,
-              preserveViewport: false,
-              map: map
-            });
-            google.maps.event.addListener(kmlLayer, 'click', function(event) {
-              var content = event.featureData.infoWindowHtml;
-              var testimonial = document.getElementById('capture');
-              testimonial.innerHTML = content;
-            });
-          }
+            var infoWindow = new google.maps.InfoWindow({map: map});
+               if (navigator.geolocation) {
+                 navigator.geolocation.getCurrentPosition(function(position) {
+                   var pos = {
+                     lat: position.coords.latitude,
+                     lng: position.coords.longitude
+                   };
+
+                   infoWindow.setPosition(pos);
+                   infoWindow.setContent('Location found.');
+                   map.setCenter(pos);
+                 }, function() {
+                   handleLocationError(true, infoWindow, map.getCenter());
+                 });
+               } else {
+                 // Browser doesn't support Geolocation
+                 handleLocationError(false, infoWindow, map.getCenter());
+               }
+             }
+
+             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+               infoWindow.setPosition(pos);
+               infoWindow.setContent(browserHasGeolocation ?
+                                     'Error: The Geolocation service failed.' :
+                                     'Error: Your browser doesn\'t support geolocation.');
+             }
+            /**
+             * Adds a KMLLayer based on the URL passed. Clicking on a marker
+             * results in the balloon content being loaded into the right-hand div.
+             * @param {string} src A URL for a KML file.
+             */
+            function loadKmlLayer(src, map) {
+              var kmlLayer = new google.maps.KmlLayer(src, {
+                suppressInfoWindows: true,
+                preserveViewport: false,
+                map: map
+              });
+              google.maps.event.addListener(kmlLayer, 'click', function(event) {
+                var content = event.featureData.infoWindowHtml;
+                var testimonial = document.getElementById('capture');
+                testimonial.innerHTML = content;
+              });
+            }
         </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqnBhH_JjkqFNoA2xP02buy0TCTz0yRnI&signed_in=true&callback=initMap"
         async defer>
