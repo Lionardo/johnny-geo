@@ -12,11 +12,11 @@
         padding: 0;
       }
       #map {
-        height: 100%;
+        height: 90%;
       }
       #capture {
-       height: 360px;
-       width: 480px;
+       height: 90%;
+       width: 100%;
        overflow: hidden;
        float: left;
        background-color: #ECECFB;
@@ -59,7 +59,7 @@
                  lng: position.coords.longitude
                };
                infoWindow.setPosition(pos);
-               infoWindow.setContent('you are here.');
+               infoWindow.setContent('You are here');
                map.setCenter(pos);
                map.setZoom(18);
                map.setTilt(0);
