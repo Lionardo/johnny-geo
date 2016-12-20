@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <style>
       html, body {
-        height: 100%;
+        height: 100vh;
         width: 100%;
         margin: 0;
         padding: 0;
@@ -37,14 +37,14 @@
            */
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: 47.36213, lng: 8.53237},
               zoom: 10,
+              center: {lat: 47.36213, lng: 8.53237},
               mapTypeId: google.maps.MapTypeId.SATELLITE,
               zoomControl: true,
-              mapTypeControl: true,
-              scaleControl: true,
-              scrollwheel: true
+              scaleControl: true
             });
+            var rectangle = new google.maps.Rectangle();
+
             loadKmlLayer(src, map);
             var infoWindow = new google.maps.InfoWindow({map: map});
             var geo_options = {
@@ -61,7 +61,7 @@
                infoWindow.setPosition(pos);
                infoWindow.setContent('you are here.');
                map.setCenter(pos);
-               map.setZoom(21);
+               map.setZoom(18);
                map.setTilt(0);
              }, function error(msg) {
                   console.log(msg);
