@@ -33,15 +33,31 @@
            */
           function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 10,
               center: {lat: 47.36213, lng: 8.53237},
+              zoom: 13,
               mapTypeId: google.maps.MapTypeId.SATELLITE,
               zoomControl: true,
               scaleControl: true
             });
-            var rectangle = new google.maps.Rectangle();
 
             loadKmlLayer(src, map);
+            /**
+            * Adds a KMLLayer based on the URL passed. Clicking on a marker
+            * results in the balloon content being loaded into the right-hand div.
+            * @param {string} src A URL for a KML file.
+            */
+           function loadKmlLayer(src, map) {
+             var kmlLayer = new google.maps.KmlLayer(src, {
+               suppressInfoWindows: true,
+               preserveViewport: false,
+               map: map
+             });
+             google.maps.event.addListener(kmlLayer, 'click', function(event) {
+               var content = event.featureData.infoWindowHtml;
+               var testimonial = document.getElementById('capture');
+               testimonial.innerHTML = content;
+             });
+           }
             var infoWindow = new google.maps.InfoWindow({map: map});
             var geo_options = {
                enableHighAccuracy: true,
@@ -69,23 +85,7 @@
                infoWindow.setContent(browserHasGeolocation ?
                                      'Error: The Geolocation service failed.' :
                                      'Error: Your browser doesn\'t support geolocation.');
-             }            /**
-             * Adds a KMLLayer based on the URL passed. Clicking on a marker
-             * results in the balloon content being loaded into the right-hand div.
-             * @param {string} src A URL for a KML file.
-             */
-            function loadKmlLayer(src, map) {
-              var kmlLayer = new google.maps.KmlLayer(src, {
-                suppressInfoWindows: true,
-                preserveViewport: false,
-                map: map
-              });
-              google.maps.event.addListener(kmlLayer, 'click', function(event) {
-                var content = event.featureData.infoWindowHtml;
-                var testimonial = document.getElementById('capture');
-                testimonial.innerHTML = content;
-              });
-            }
+             }
         </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDqnBhH_JjkqFNoA2xP02buy0TCTz0yRnI&signed_in=true&callback=initMap"
         async defer>
